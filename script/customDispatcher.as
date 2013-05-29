@@ -1,0 +1,1 @@
+﻿package script {		import flash.events.EventDispatcher;	import flash.events.Event;		public class customDispatcher extends EventDispatcher {		public var ACTION:String;				public function customDispatcher(customAction:String) {			// constructor code			ACTION = customAction;					}	}	}

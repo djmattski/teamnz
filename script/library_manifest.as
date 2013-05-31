@@ -1,0 +1,1 @@
+﻿package script {		import sec1.team_stories.*;		public class library_manifest {				private var teamStories1:sec_1_g_ashby_story_title;		private var teamStories2:sec_1_g_ashby_story_1;		private var teamStories3:sec_1_g_ashby_story_2;						public function library_manifest() {			// constructor code		}	}	}

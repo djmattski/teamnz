@@ -13,6 +13,8 @@ package script
 	import script.tools;
 	import script.ui.component.ScrollBarComponent;
 	
+	import script.ui.video.CustomPlayer;
+	
 	public class video_gallery extends Sprite{
 		
 		private var vidPrefix:String;
@@ -26,10 +28,12 @@ package script
 		private var theColour1:uint;
 		private var theColour2:uint;
 		private var bigImageCont:Sprite;
-		private var downBtn:global_download_image;
+		private var downBtn:global_download_video;
 		private var currImage:int;
 		private var numVids:int;
 		private var myTools:tools;
+		private var vidReference:Array;
+		private var video:CustomPlayer;
 		
 		public function video_gallery(vid_gal_identifier,colour1:uint,colour2:uint){
 			// constructor code
@@ -39,7 +43,15 @@ package script
 				case 'boats_vid_gal':
 					numVids = 5;
 					vidPrefix = 'sec_3';
+					vidReference = new Array(
+							'120721_ETNZ_AC72_Launch',
+							'120906_AC72_Day_5',
+							'121206_AC72_Tornado_Day_2-YouTube',
+							'121212_AC72_Day_30-YouTube',
+							'130212_Boat_2_Day_1_FINAL-YouTube'
+						);
 					break;
+				
 			}
 			
 			//Title
@@ -59,8 +71,6 @@ package script
 			imageHolder.y = 130;
 			addChild(imageHolder);
 			for(var i:int = 0; i < numVids; i++){
-				
-				
 				
 				var newNum:int = i+1;
 				var classRefImgGalThumb:Class = getDefinitionByName(vidPrefix+'_vid_thumb_'+newNum) as Class;
@@ -117,15 +127,14 @@ package script
 			lines.y = 515;
 			bigImageCont.addChild(lines);
 			
-			var numberName:Number = tools.getItemNumber(e.currentTarget.name);
-			var classRefBigImg:Class = getDefinitionByName(vidPrefix+'_image_'+numberName) as Class;
-			var bigImage:MovieClip = new classRefBigImg();
-			bigImage.name = 'bigImage';
-			bigImage.x = 512 - (bigImage.width / 2);
-			bigImage.y = 0;
-			bigImageCont.addChild(bigImage);
-			
-			currImage = numberName;
+			var index:Number = tools.getItemNumber(e.currentTarget.name);
+			video = new CustomPlayer();
+			video.init(860, 484);
+			video.x = 80;
+			video.y = 0;
+			video.loadVideo('./flv/'+vidReference[index]+'.flv');
+			bigImageCont.addChild(video);
+			video.enable();
 			
 			closeCont = new Sprite();
 			closeCont.name = 'closeCont';
@@ -162,16 +171,16 @@ package script
 			closeCont.addEventListener(MouseEvent.MOUSE_DOWN, closeMeDown);
 			
 			//Add in download button
-			downBtn = new global_download_image();
-			downBtn.name = 'downBtn';
+			downBtn = new global_download_video();
+			downBtn.name = index+'_downBtn';
 			downBtn.x = 512 - (downBtn.width / 2);
 			downBtn.y = 538;
 			downBtn.buttonMode = true;
+			downBtn.addEventListener(MouseEvent.ROLL_OVER, appBase.rollOn);
+			downBtn.addEventListener(MouseEvent.ROLL_OUT, appBase.rollOff);
 			downBtn.addEventListener(MouseEvent.MOUSE_DOWN, downloadThis);
 			bigImageCont.addChild(downBtn);
 			
-			//Next/Prev
-			giveMeSomeNextPrev(bigImageCont);
 			
 			addChild(bigImageCont);
 			TweenLite.to(bigImageCont, 0.5, {alpha:1});
@@ -185,103 +194,13 @@ package script
 		}
 		
 		private function downloadThis(e:MouseEvent):void{
-			//trace(vidPrefix+currImage);
+			var index:Number = tools.getItemNumber(e.currentTarget.name);
 			myTools = new tools();
-			myTools.fileName = vidPrefix+'_image_'+currImage+'.jpg';
-			myTools.loadFile('downloads/'+vidPrefix+'_image_'+currImage+'.jpg');
+			myTools.fileName = vidReference[index]+'.mov';
+			myTools.loadFile('downloads/video/'+vidReference[index]+'.mov');
 		}
 		
-		private function giveMeSomeNextPrev(myParent:Sprite):void{
-			
-			var classRefPrev:Class = getDefinitionByName(vidPrefix+'_prev_image') as Class;
-			var prevBtn:MovieClip = new classRefPrev();
-			prevBtn.name ='prevBtn';
-			prevBtn.x = downBtn.x - prevBtn.width - 10;
-			prevBtn.y = 538;
-			prevBtn.buttonMode = true;
-			if(currImage <= 1){
-				prevBtn.visible = false;
-			}
-			prevBtn.addEventListener(MouseEvent.MOUSE_DOWN, moveThisPageYo);			
-			prevBtn.addEventListener(MouseEvent.ROLL_OVER, appBase.rollOn);
-			prevBtn.addEventListener(MouseEvent.ROLL_OUT, appBase.rollOff);
-			myParent.addChild(prevBtn);
-			
-			var classRefNext:Class = getDefinitionByName(vidPrefix+'_next_image') as Class;
-			var nextBtn:MovieClip = new classRefNext();
-			nextBtn.name ='nextBtn';
-			nextBtn.x = downBtn.x + downBtn.width + 10;
-			nextBtn.y = 538;
-			nextBtn.buttonMode = true;
-			if(currImage >= numVids){
-				nextBtn.visible = false;
-			}
-			nextBtn.addEventListener(MouseEvent.MOUSE_DOWN, moveThisPageYo);
-			nextBtn.addEventListener(MouseEvent.ROLL_OVER, appBase.rollOn);
-			nextBtn.addEventListener(MouseEvent.ROLL_OUT, appBase.rollOff);
-			myParent.addChild(nextBtn);
-		}
 		
-		private function moveThisPageYo(e:MouseEvent):void{
-			
-			var currImageMc:MovieClip = bigImageCont.getChildByName('bigImage') as MovieClip;
-			var nextBtn:MovieClip = bigImageCont.getChildByName('nextBtn') as MovieClip;
-			var prevBtn:MovieClip = bigImageCont.getChildByName('prevBtn') as MovieClip;
-			
-			switch(e.currentTarget.name){
-				case 'nextBtn':
-					if(currImage < numVids){
-						
-						TweenLite.to(currImageMc, 0.5, {alpha:0, ease:Sine.easeOut, onComplete:function(){
-							bigImageCont.removeChild(currImageMc);
-							currImage ++;
-							var numberName:Number = currImage;
-							var classRef:Class = getDefinitionByName(vidPrefix+'_image_'+numberName) as Class;
-							var bigImage:MovieClip = new classRef();
-							bigImage.name = 'bigImage';
-							bigImage.x = 512 - (bigImage.width / 2);
-							bigImage.y = 0;
-							bigImage.alpha = 0;
-							bigImageCont.addChild(bigImage);
-							TweenLite.to(bigImage, 0.5, {alpha:1, ease:Sine.easeIn});
-							//REmove next btn
-							if(currImage >= numVids){
-								nextBtn.visible = false;
-							}
-							if(currImage > 1){
-								prevBtn.visible = true;
-							}
-						}});
-						
-					}
-					break;
-				case 'prevBtn':
-					if(currImage > 1){
-						
-						TweenLite.to(currImageMc, 0.5, {alpha:0, ease:Sine.easeOut, onComplete:function(){
-							bigImageCont.removeChild(currImageMc);
-							currImage --;
-							var numberName:Number = currImage;
-							var classRef:Class = getDefinitionByName(vidPrefix+'_image_'+numberName) as Class;
-							var bigImage:MovieClip = new classRef();
-							bigImage.name = 'bigImage';
-							bigImage.x = 512 - (bigImage.width / 2);
-							bigImage.y = 0;
-							bigImage.alpha = 0;
-							bigImageCont.addChild(bigImage);
-							TweenLite.to(bigImage, 0.5, {alpha:1, ease:Sine.easeIn});
-							//REmove prev btn
-							if(currImage <= 1){
-								prevBtn.visible = false;
-							}
-							if(currImage < numVids){
-								nextBtn.visible = true;
-							}
-						}});
-					}
-					break;
-			}
-		}
 		
 	}
 }

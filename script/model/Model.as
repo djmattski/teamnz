@@ -13,7 +13,7 @@ package script.model
 		
 		public static var SECTIONS:Object = new Object();
 		SECTIONS[TEAM] = { id:TEAM, className:'sec_team', color:0xD4A630, nav:{ textOffsetX:-30, textOffsetY:65 } };
-		SECTIONS[HISTORY] = { id:HISTORY, color:0xB33048, nav:{ textOffsetX:-30, textOffsetY:65 } };
+		SECTIONS[HISTORY] = { id:HISTORY, className:'sec_history', color:0xB33048, nav:{ textOffsetX:-30, textOffsetY:65 } };
 		SECTIONS[BOATS] = { id:BOATS, className:'sec_boats', color:0x0082A7, nav:{ textOffsetX:-19, textOffsetY:65 } };
 		SECTIONS[SPONSORS] = { id:SPONSORS, color:0x008241, nav:{ textOffsetX:-38, textOffsetY:65 } };
 		SECTIONS[PRADA] = { id:PRADA, className:'sec_prada', color:0xEF791D, nav:{ textOffsetX:-77, textOffsetY:65 } };

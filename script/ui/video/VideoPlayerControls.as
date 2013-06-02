@@ -11,6 +11,8 @@ package script.ui.video
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import fonts.GothamMediumFont;
+	
 	import script.ui.BaseButton;
 	
 	public class VideoPlayerControls extends EventDispatcher
@@ -41,7 +43,8 @@ package script.ui.video
 			_rewindButton = new BaseButton(container.rewindbutton);
 			_volume = new VolumeControl(_container.volume);
 			
-			var textFormat:TextFormat = new TextFormat('Gotham Medium', 10, 0xffffff);
+			var font:Font = new GothamMediumFont();
+			var textFormat:TextFormat = new TextFormat(font.fontName, 10, 0xffffff);
 			
 			_currentTime.embedFonts = true;
 			_totalTime.embedFonts = true;

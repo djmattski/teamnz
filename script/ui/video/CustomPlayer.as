@@ -6,6 +6,8 @@ package script.ui.video
 	import com.greensock.loading.ImageLoader;
 	import com.greensock.loading.VideoLoader;
 	
+	import component.VideoPlayerAsset;
+	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -27,7 +29,7 @@ package script.ui.video
 		{
 			_controller = new VideoController();
 			
-			_player = new video_player_asset();
+			_player = new VideoPlayerAsset;
 			_controls = new VideoPlayerControls(_player.controls, _controller);
 			_placeHolder = new Sprite();
 			_videoContainer = new Sprite();

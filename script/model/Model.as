@@ -16,7 +16,7 @@ package script.model
 		SECTIONS[HISTORY] = { id:HISTORY, color:0xB33048, nav:{ textOffsetX:-30, textOffsetY:65 } };
 		SECTIONS[BOATS] = { id:BOATS, className:'sec_boats', color:0x0082A7, nav:{ textOffsetX:-19, textOffsetY:65 } };
 		SECTIONS[SPONSORS] = { id:SPONSORS, color:0x008241, nav:{ textOffsetX:-38, textOffsetY:65 } };
-		SECTIONS[PRADA] = { id:PRADA, color:0xEF791D, nav:{ textOffsetX:-77, textOffsetY:65 } };
+		SECTIONS[PRADA] = { id:PRADA, className:'sec_prada', color:0xEF791D, nav:{ textOffsetX:-77, textOffsetY:65 } };
 		SECTIONS[SAN_FRANCISCO] = { id:SAN_FRANCISCO, className:'sec_sanfran', color:0x904F84, nav:{ textOffsetX:-74, textOffsetY:65 } };
 		SECTIONS[VOLVO_OCEAN_RACE] = { id:VOLVO_OCEAN_RACE, color:0x008282, nav:{ textOffsetX:-57, textOffsetY:65 } };
 		SECTIONS[LATEST_RESOURCES] = { id:LATEST_RESOURCES, color:0x006FA6, nav:{ textOffsetX:-66, textOffsetY:65 } };
